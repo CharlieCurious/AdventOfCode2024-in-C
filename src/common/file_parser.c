@@ -7,11 +7,11 @@
 #define MAX_NUMBER_OF_LINES 1024
 #define MAX_LINE_LENGHT 256
 
-FILE *open_file_or_exit(const char *file_path) {
+FILE *open_input_file(const char *file_path) {
     FILE *file = fopen(file_path, "r");
     if (file == NULL) {
         fprintf(stderr, "Could not open file: %s\n", file_path);
-        return EXIT_FAILURE;
+        return NULL;
     }
     return file;
 }
