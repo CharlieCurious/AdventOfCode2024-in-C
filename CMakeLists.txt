@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.22.1)
 project(AdventOfCode2024)
 
 set(CMAKE_C_STANDARD 17)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON) # Needed for proper nvim lsp functioning.
 
 set(DAY "day_1" CACHE STRING "Day to compile")
 

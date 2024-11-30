@@ -1,3 +1,12 @@
+#include <unity.h>
+
+void setUp() {
+}
+
+void tearDown() {
+}
+
 int main() {
-    return 0;
+    UNITY_BEGIN();
+    return UNITY_END();
 }
