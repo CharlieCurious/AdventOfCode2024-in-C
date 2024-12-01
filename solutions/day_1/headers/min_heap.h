@@ -7,6 +7,10 @@ typedef struct {
     unsigned int size;
 } MinHeap;
 
-MinHeap *createMinHeap(unsigned int capacity);
+MinHeap *create_min_heap(unsigned int capacity);
 
 void insert(MinHeap *heap, unsigned int value);
+
+void free_min_heap(MinHeap **heap);
+
+unsigned int pop_min(MinHeap *heap);
