@@ -4,6 +4,7 @@ project(AdventOfCode2024)
 
 set(CMAKE_C_STANDARD 17)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON) # Needed for proper nvim lsp functioning.
+set(CMAKE_BUILD_TYPE Debug)
 
 set(DAY "day_1" CACHE STRING "Day to compile")
 
