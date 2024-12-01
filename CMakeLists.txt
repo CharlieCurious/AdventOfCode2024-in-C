@@ -12,7 +12,7 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMake")
 include(AddAdventDay)
 include(AddDayTest)
 
-add_subdirectory(src)
+add_subdirectory(solutions)
 
 option(ENABLE_TESTS "Enable building tests" ON)
 if(ENABLE_TESTS)
