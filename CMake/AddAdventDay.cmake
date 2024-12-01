@@ -26,6 +26,6 @@ function(add_advent_day day_name)
 
     # Create the executable with main.c and link it to the library
     add_executable(${day_name} ${main_file})
-    target_link_libraries(${day_name} PRIVATE ${day_name}_lib)
+    target_link_libraries(${day_name} PRIVATE ${day_name}_lib common)
 
 endfunction()
