@@ -17,12 +17,13 @@ int main() {
         unsigned int report_size = get_report_size(input_lines->lines[i]);
         unsigned int *report = parse_report(input_lines->lines[i], report_size);
 
-        if (is_report_safe(report, report_size))
+        if (is_report_safe(report, report_size)) {
             safe_report_count++;
-
-        if(check_with_removed_element(report, report_size))
             safe_damped_report_count++;
-
+        } else {
+            if(check_with_removed_element(report, report_size))
+                safe_damped_report_count++;
+        }
         free(report);
     }
 
