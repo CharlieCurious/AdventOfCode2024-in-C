@@ -10,6 +10,6 @@ typedef struct {
 // If input file cannot be opened, nothing will work -- se we exit the program.
 FILE *open_input_file(const char *file_path);
 
-void read_input_lines(FILE *input_file, InputLines *input_lines);
+InputLines *read_input_lines(FILE *input_file);
 
-void free_input_lines(InputLines *input_lines);
+void free_input_lines(InputLines **input_lines);

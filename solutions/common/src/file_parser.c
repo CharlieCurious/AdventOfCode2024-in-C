@@ -16,11 +16,18 @@ FILE *open_input_file(const char *file_path) {
     return file;
 }
 
-void read_input_lines(FILE *input_file, InputLines *input_lines) {
-    char **lines = (char **)malloc(MAX_NUMBER_OF_LINES * sizeof(char *));
+InputLines *read_input_lines(FILE *input_file) {
+    InputLines *input_lines = (InputLines *)malloc(sizeof(InputLines));
+    if (!input_lines){
+        perror("Failed to allocate memory for InputLines");
+        return NULL;
+    }
+
+    char **lines = (char **)calloc(MAX_NUMBER_OF_LINES, sizeof(char *));
     if (lines == NULL) {
-        perror("Failed to allocate memory for lines");
-        return;
+        perror("Failed to allocate memory for InputLines->lines");
+        free(input_lines);
+        return NULL;
     }
 
     char line_buffer[MAX_LINE_LENGHT];
@@ -39,22 +46,26 @@ void read_input_lines(FILE *input_file, InputLines *input_lines) {
 
     input_lines->lines = lines;
     input_lines->count = line_count;
+
+    return input_lines;
 }
 
-void free_input_lines(InputLines *input_lines) {
-    if (input_lines == NULL)
+void free_input_lines(InputLines **input_lines) {
+    if (input_lines == NULL || *input_lines == NULL)
         return;
 
-    for (size_t i = 0; i < input_lines->count; i++) {
-        free(input_lines->lines[i]);
-        input_lines->lines[i] = NULL;
+    if ((*input_lines)->lines != NULL) {
+        for (size_t i = 0; i < (*input_lines)->count; i++) {
+            if ((*input_lines)->lines[i]) 
+                free((*input_lines)->lines[i]);
+        }
+
+        free((*input_lines)->lines);
+        (*input_lines)->lines = NULL;
     }
 
-    free(input_lines->lines);
-    input_lines->lines = NULL;
-
-    free(input_lines);
-    input_lines = NULL;
+    free(*input_lines);
+    *input_lines = NULL;
 }
 
 
