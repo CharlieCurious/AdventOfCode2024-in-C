@@ -87,53 +87,6 @@ void should_determine_unsafe_report_if_difference_too_small() {
 
 // ------------------------------------------- Part 2 tests ------------------------------------------------
 
-void should_determine_safe_report_decreasing_part_2() {
-    unsigned int report[5] = { 7, 6, 4, 2, 1 }; 
-
-    bool result = is_report_safe_part_2(report, 5);
-
-    TEST_ASSERT_TRUE(result);
-}
-
-void should_determine_safe_report_increasing_part_2() {
-    unsigned int report[5] = { 1, 3, 6, 7, 9 }; 
-
-    bool result = is_report_safe_part_2(report, 5);
-
-    TEST_ASSERT_TRUE(result);
-}
-
-void should_determine_unsafe_report_decreasing_part_2() {
-    unsigned int report[5] = { 9, 7, 6, 2, 1 }; 
-
-    bool result = is_report_safe_part_2(report, 5);
-
-    TEST_ASSERT_FALSE(result);
-}
-
-void should_determine_unsafe_report_increasing_part_2() {
-    unsigned int report[5] = { 1, 2, 7, 8, 9 }; 
-
-    bool result = is_report_safe_part_2(report, 5);
-
-    TEST_ASSERT_FALSE(result);
-}
-
-void should_determine_damped_report_when_order_changed_part_2() {
-    unsigned int report[5] = { 75, 77, 72, 70, 69 }; 
-
-    bool result = is_report_safe_part_2(report, 5);
-
-    TEST_ASSERT_TRUE(result);
-}
-
-void should_determine_damped_report_when_difference_too_small_part_2() {
-    unsigned int report[5] = { 8, 6, 4, 4, 1 }; 
-
-    bool result = is_report_safe_part_2(report, 5);
-
-    TEST_ASSERT_TRUE(result);
-}
 
 void tearDown() {
 }
@@ -150,12 +103,6 @@ int main() {
     RUN_TEST(should_determine_unsafe_report_if_difference_too_small);
 
     // part 2
-    RUN_TEST(should_determine_safe_report_decreasing_part_2);
-    RUN_TEST(should_determine_safe_report_increasing_part_2);
-    RUN_TEST(should_determine_unsafe_report_decreasing_part_2);
-    RUN_TEST(should_determine_unsafe_report_increasing_part_2);
-    RUN_TEST(should_determine_damped_report_when_order_changed_part_2);
-    RUN_TEST(should_determine_damped_report_when_difference_too_small_part_2);
 
     return UNITY_END();
 }

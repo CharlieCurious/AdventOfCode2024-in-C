@@ -41,35 +41,25 @@ bool is_report_safe(unsigned int *numbers, unsigned int length) {
     return true;
 } 
 
-bool is_report_safe_part_2(unsigned int *numbers, unsigned int length) {
+bool check_with_removed_element(unsigned int *data, unsigned int length) {
+    for (int i = 0; i < length; i++) {
 
-    unsigned int previous = numbers[0];
-    bool error_damped = false;
-    bool is_increasing = numbers[0] < numbers[1];
-    for (int i = 1; i < length; i++) {
-        if (is_increasing && numbers[i] < previous) {
-            if (error_damped) return false;
-            error_damped = true;
-            is_increasing = false;
-            previous = numbers[i];
-            continue;
+        unsigned int *data_copy = (unsigned int *)malloc((length - 1) * sizeof(unsigned int));
+
+        if (data_copy == NULL)
+            return false;
+
+        memcpy(data_copy, data, i * sizeof(int));
+        memcpy(data_copy + i, data + i + 1, (length - i - 1) * sizeof(int));
+
+        if (is_report_safe(data_copy, length - 1)) {
+            free(data_copy); 
+            return true;
         }
-        if (!is_increasing && numbers[i] > previous) {
-            if (error_damped) return false;
-            error_damped = true;
-            is_increasing = true;
-            previous = numbers[i];
-            continue;
-        }
-        if (abs((int)numbers[i] - (int)previous) > 3 || numbers[i] == previous) {
-            if (error_damped) return false;
-            error_damped = true;
-            continue;
-        }
-        previous = numbers[i];
+
+        free(data_copy);
     }
-
-    return true;
+    return false;
 }
 
 unsigned int get_report_size(char *report) {
