@@ -1,3 +1,4 @@
+#include <day_2/headers/banalyser.h>
 #include <unity.h>
 
 void setUp() {
