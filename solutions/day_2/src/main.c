@@ -20,7 +20,7 @@ int main() {
         if (is_report_safe(report, report_size))
             safe_report_count++;
 
-        if(is_report_safe_part_2(report, report_size))
+        if(check_with_removed_element(report, report_size))
             safe_damped_report_count++;
 
         free(report);
