@@ -1,3 +1,4 @@
+#include <collections.h>
 #include <mul_finder.h>
 #include <unity.h>
 
@@ -13,9 +14,9 @@ void test_should_find_all_mul_instructions() {
         "mul(8,5)"
     };
 
-    char **result = find_mul_instructions(test_input, 84);
+    ListString *result = find_mul_instructions(test_input, 84);
 
-    TEST_ASSERT_EQUAL_STRING_ARRAY(expected_result, result, 4);
+    TEST_ASSERT_EQUAL_STRING_ARRAY(expected_result, result->strings, 4);
 }
 
 void test_should_process_mul_instructions_correctly() {

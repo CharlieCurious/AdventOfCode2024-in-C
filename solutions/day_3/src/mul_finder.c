@@ -1,3 +1,4 @@
+#include "collections.h"
 #include <mul_finder.h>
 #include <regex.h>
 #include <stdio.h>
@@ -18,7 +19,7 @@ ListString *find_mul_instructions(const char *program, const unsigned int progra
         return NULL;
     }
 
-    char **found_instructions = (char **)calloc(program_length, sizeof(char *));
+    ListString *found_instructions = create_list_str(10);
     if (!found_instructions) {
         perror("Failed to allocate for found_instructions");
         regfree(&regex);
@@ -31,22 +32,17 @@ ListString *find_mul_instructions(const char *program, const unsigned int progra
 
         unsigned int size = match_end - match_start;
 
-        char *found_instruction = (char *)malloc(size + 1);
-        if (!found_instruction) {
-            perror("Failed to allocate for found instruction");
-            regfree(&regex);
-            free(found_instructions);
-            return NULL;
-        }
+        char found_instruction[size];
 
         strncpy(found_instruction, program + match_start, size); 
         found_instruction[size] = '\0';
 
-        start_index += match.rm_eo + 1;
+        append_list_str(found_instructions, found_instruction);
+
+        start_index += match.rm_so + 1;
     }
 
-    return NULL;
-
+    return found_instructions;
 }
 
 unsigned int process_mul_instruction(const char *instruction) {
