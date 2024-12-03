@@ -20,12 +20,17 @@ function(add_advent_day day_name)
         message(FATAL_ERROR "No main.c file found in ${src_dir}")
     endif()
 
-    # Create a static library with all source files except main.c
-    add_library(${day_name}_lib STATIC ${lib_files})
-    target_include_directories(${day_name}_lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/${day_name}/headers)
+    # If there are lib files, create a static library with all source files except main.c
+    if (lib_files)
+        add_library(${day_name}_lib STATIC ${lib_files})
+        target_include_directories(${day_name}_lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/${day_name}/headers)
+        set(link_libs ${day_name}_lib)
+    else()
+        set(link_libs)
+    endif()
 
     # Create the executable with main.c and link it to the library
     add_executable(${day_name} ${main_file})
-    target_link_libraries(${day_name} PRIVATE ${day_name}_lib common)
+    target_link_libraries(${day_name} PRIVATE ${link_libs} common)
 
 endfunction()
