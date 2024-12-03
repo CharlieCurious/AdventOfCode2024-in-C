@@ -3,6 +3,6 @@
 #include <collections.h>
 #include <regex.h>
 
-ListString *find_mul_instructions(const char *string, const unsigned int program_length);
+ListString *find_patterns(const char *string, const char *pattern);
 
-unsigned int process_mul_instruction(const char *instruction);
+unsigned int process_mul_instruction(ListString *instruction);

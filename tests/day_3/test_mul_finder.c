@@ -14,20 +14,22 @@ void test_should_find_all_mul_instructions() {
         "mul(8,5)"
     };
 
-    ListString *result = find_mul_instructions(test_input, 84);
+    ListString *result = find_patterns(test_input, "mul\\([0-9]{1,3},[0-9]{1,3}\\)");
 
     TEST_ASSERT_EQUAL_STRING_ARRAY(expected_result, result->strings, 4);
 }
 
 void test_should_process_mul_instructions_correctly() {
-    const char *test_instruction_1 = "mul(2,4)";
-    const char *test_instruction_2 = "mul(8,5)";
+    char *test_instruction_1 = "mul(2,4)";
+    char *test_instruction_2 = "mul(8,5)";
 
-    unsigned int result_1 = process_mul_instruction(test_instruction_1);
-    unsigned int result_2 = process_mul_instruction(test_instruction_2);
+    ListString *instructions = create_list_str(2);
+    append_list_str(instructions, test_instruction_1);
+    append_list_str(instructions, test_instruction_2);
 
-    TEST_ASSERT_EQUAL_UINT(8, result_1);
-    TEST_ASSERT_EQUAL_UINT(40, result_2);
+    unsigned int result = process_mul_instruction(instructions);
+
+    TEST_ASSERT_EQUAL_UINT(48, result);
 }
 
 void tearDown() {
