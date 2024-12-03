@@ -43,6 +43,14 @@ ListString *find_patterns(const char *text, const char *pattern) {
     return found_instructions;
 }
 
+ListString *find_enabled_sections(const char *string) {
+    const char *pattern = "do\\(\\)([^d]*)(don't\\(\\)|$)";
+
+    ListString *enabled_sections = find_patterns(string, pattern);
+
+    return enabled_sections;
+}
+
 unsigned int process_mul_instruction(ListString *instructions) {
 
     const char *pattern = "[0-9]{1,3}";
