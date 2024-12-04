@@ -1,11 +1,12 @@
 #include <collections.h>
 #include <mul_finder.h>
 #include <regex.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-ListString *find_patterns(const char *text, const char *pattern) {
+ListString *find_instructions(const char *text, const char *pattern) {
     regex_t regex;
     regmatch_t match;
     unsigned int start_index = 0;
@@ -13,7 +14,7 @@ ListString *find_patterns(const char *text, const char *pattern) {
     
     result = regcomp(&regex, pattern, REG_EXTENDED);
     if (result != 0) {
-        perror("Failed to compile regex");
+        fprintf(stderr,"Failed to compile regex for pattern: %s\n", pattern);
         return NULL;
     }
 
@@ -43,12 +44,41 @@ ListString *find_patterns(const char *text, const char *pattern) {
     return found_instructions;
 }
 
-ListString *find_enabled_sections(const char *string) {
-    const char *pattern = "do\\(\\)([^d]*)(don't\\(\\)|$)";
+char *remove_substring(const char *string) {
+    size_t length = strlen(string);
+    char *output = (char *)malloc(length + 1);
+    if (!output) {
+        perror("Failed to allocate for remove_substring");
+        return NULL;
+    }
 
-    ListString *enabled_sections = find_patterns(string, pattern);
+    bool enabled = true;
+    const char *current = string;
+    char *out_ptr = output;
 
-    return enabled_sections;
+    while(*current) {
+        if (strncmp(current, "don't()", 7) == 0) {
+            enabled = false;
+            current += 7;
+        } else if (strncmp(current, "do()", 4) == 0) {
+            enabled = true;
+            current += 4;
+        } else {
+            if (enabled) {
+                *out_ptr++ = *current;
+            }
+            current++;
+        }
+    }
+    *out_ptr = '\0';
+
+    // Adjust size
+    char *shrinked_output = realloc(output, strlen(output) + 1);
+    if (shrinked_output)
+        return shrinked_output;
+    else
+        return output;
+
 }
 
 unsigned int process_mul_instruction(ListString *instructions) {
@@ -57,7 +87,7 @@ unsigned int process_mul_instruction(ListString *instructions) {
     unsigned int sum_of_instructions = 0;
 
     for (size_t i = 0; i < instructions->size; i++) {
-        ListString *numbers = find_patterns(instructions->strings[i], pattern);
+        ListString *numbers = find_instructions(instructions->strings[i], pattern);
         sum_of_instructions += atoi(numbers->strings[0]) * atoi(numbers->strings[1]);
         free_list_str(&numbers);
     }

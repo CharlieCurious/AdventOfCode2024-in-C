@@ -14,7 +14,7 @@ void test_should_find_all_mul_instructions() {
         "mul(8,5)"
     };
 
-    ListString *result = find_patterns(test_input, "mul\\([0-9]{1,3},[0-9]{1,3}\\)");
+    ListString *result = find_instructions(test_input, "mul\\([0-9]{1,3},[0-9]{1,3}\\)");
 
     TEST_ASSERT_EQUAL_STRING_ARRAY(expected_result, result->strings, 4);
     free_list_str(&result);
@@ -34,16 +34,13 @@ void test_should_process_mul_instructions_correctly() {
     free_list_str(&instructions);
 }
 
-void test_should_find_enabled_sections() {
-    const char *test_string = "xmul(2,4)&mul[3,7]!^don't()_mul(5,5)+mul(32,64](mul(11,8)undo()?mul(8,5))";
-    const char *expected_match = "do()?mul(8,5))";
+void test_should_remove_disabled_sections() {
+    const char *test_string = "xmul(2,4)&mul[3,7]!^don't()_mul(5,5)+mul(32,64](mul(11,8)undo()?mul(8,5))don't()skjhsfkmul(1,2)";
+    const char *expected_result = "xmul(2,4)&mul[3,7]!^?mul(8,5))";
 
-    ListString *result = find_enabled_sections(test_string);
+    char *result_remove_middle_section = remove_substring(test_string);
 
-    TEST_ASSERT_EQUAL_size_t_MESSAGE(1, result->size, "Assert number of matches.");
-    TEST_ASSERT_EQUAL_STRING_MESSAGE(expected_match, result->strings[0], "Assert expected match.");
-
-    free_list_str(&result);
+    TEST_ASSERT_EQUAL_STRING(expected_result, expected_result);
 }
 
 void tearDown() {
@@ -53,7 +50,7 @@ int main() {
     UNITY_BEGIN();
     RUN_TEST(test_should_find_all_mul_instructions);
     RUN_TEST(test_should_process_mul_instructions_correctly);
-    RUN_TEST(test_should_find_enabled_sections);
+    RUN_TEST(test_should_remove_disabled_sections);
     return UNITY_END();
 }
 
