@@ -50,6 +50,45 @@ InputLines *read_input_lines(FILE *input_file) {
     return input_lines;
 }
 
+InputLines *read_input_lines_from_str(const char *input_str) {
+    InputLines *input_lines = (InputLines *)malloc(sizeof(InputLines));
+    if(!input_lines) {
+        perror("Failed to allocate memory for InputLines");
+        return NULL;
+    }
+    
+    char **lines = (char **)calloc(MAX_NUMBER_OF_LINES, sizeof(char *));
+    if (lines == NULL) {
+        perror("Failed to allocate memory for InputLines->lines");
+        free(input_lines);
+        return NULL;
+    }
+
+    char *mutable_string = strdup(input_str);
+    if (!mutable_string) {
+        perror("Failed to allocate memory for mutable string");
+        free(input_lines);
+        free(lines);
+        return NULL;
+    }
+
+    size_t line_count = 0;
+    char *line = strtok(mutable_string, "\n");
+    while(line != NULL && line_count < MAX_NUMBER_OF_LINES) {
+        lines[line_count] = strdup(line);
+        if (!lines[line_count])
+            fprintf(stderr, "Failed to allocate memory for line: %s\n", line);
+        line = strtok(NULL, "\n");
+        line_count++;
+    }
+
+    input_lines->lines = lines;
+    input_lines->count = line_count;
+
+    free(mutable_string);
+    return input_lines;
+}
+
 void free_input_lines(InputLines **input_lines) {
     if (input_lines == NULL || *input_lines == NULL)
         return;
