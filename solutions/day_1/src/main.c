@@ -10,8 +10,7 @@ int main() {
     FILE *file = open_input_file("input_files/day_1.txt"); 
     if (file == NULL) exit(EXIT_FAILURE);
 
-    InputLines *input_lines = (InputLines *)malloc(sizeof(InputLines));
-    read_input_lines(file, input_lines);
+    InputLines *input_lines = read_input_lines(file);
     fclose(file);
 
     unsigned int left_col[INPUT_LINES_COUNT];
@@ -30,6 +29,7 @@ int main() {
         find(multipliers, right_num, &occurence_count);
         insert_in_dictionary(multipliers, right_num, ++occurence_count);
     }
+    free(input_lines);
 
     qsort(left_col, INPUT_LINES_COUNT, sizeof(unsigned int), qsort_compare);
     qsort(right_col, INPUT_LINES_COUNT, sizeof(unsigned int), qsort_compare);
@@ -59,14 +59,3 @@ int main() {
 static int qsort_compare(const void *a, const void *b) {
     return *(unsigned int *)a - *(unsigned int *)b;
 }
-
-
-
-
-
-
-
-
-
-
-
