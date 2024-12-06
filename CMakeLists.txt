@@ -6,7 +6,7 @@ set(CMAKE_C_STANDARD 17)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON) # Needed for proper nvim lsp functioning.
 set(CMAKE_BUILD_TYPE Debug)
 
-set(DAY "day_4" CACHE STRING "Day to compile")
+set(DAY "day_5" CACHE STRING "Day to compile")
 
 # Include custom CMake functions
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMake")
