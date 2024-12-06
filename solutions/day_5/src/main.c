@@ -1,3 +1,4 @@
+#include <rules.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -25,6 +26,8 @@ int main() {
         return EXIT_FAILURE;
     }
     strcpy(updates_str, token + 2);
+
+    rules_graph rules = init_rules_graph(rules_str, 99);
 
     free(input_str);
     free(rules_str);
