@@ -3,4 +3,4 @@
 #include <rules.h>
 #include <updates.h>
 
-UpdateList *filter_ordered_updates(const UpdateList *updates, const rules_graph rules);
+UpdateList *filter_updates(const UpdateList *updates, const rules_graph rules, bool get_ordered);

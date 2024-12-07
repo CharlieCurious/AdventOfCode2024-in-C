@@ -8,13 +8,14 @@
 
 static bool is_update_in_order(const ListUInt *single_update, const rules_graph rules); 
 
-UpdateList *filter_ordered_updates(const UpdateList *updates, const rules_graph rules) {
+UpdateList *filter_updates(const UpdateList *updates, const rules_graph rules, bool get_ordered) {
     ListUInt *ordered_updates_buffer[updates->num_updates];
     
     size_t count = 0;
     for (size_t i = 0; i < updates->num_updates; i++) {
         ListUInt *update = updates->updates[i];
-        if (is_update_in_order(update, rules))
+        bool is_ordered = is_update_in_order(update, rules);
+        if (is_ordered == get_ordered)
             ordered_updates_buffer[count++] = update;
     }
 

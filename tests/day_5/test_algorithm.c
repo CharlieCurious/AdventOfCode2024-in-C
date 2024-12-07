@@ -44,7 +44,7 @@ void should_get_ordered_updates() {
     uint result1[5] = { 97, 61, 53, 29, 13 };
     uint result2[3] = { 75, 29, 13 };
 
-    UpdateList *result = filter_ordered_updates(updates, rules);
+    UpdateList *result = filter_updates(updates, rules, true);
 
     TEST_ASSERT_EQUAL_UINT_ARRAY_MESSAGE(result0, result->updates[0]->uints, 5, "Assert result[0]");
     TEST_ASSERT_EQUAL_UINT_ARRAY_MESSAGE(result1, result->updates[1]->uints, 5, "Assert result[1]");

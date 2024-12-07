@@ -35,7 +35,7 @@ int main() {
 
     // Part 1
 
-    UpdateList *ordered_updates = filter_ordered_updates(updates, rules);
+    UpdateList *ordered_updates = filter_updates(updates, rules, true);
     if (!ordered_updates)
         return EXIT_FAILURE;
     
