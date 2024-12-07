@@ -1,7 +1,10 @@
+#include <algorithm.h>
+#include <collections.h>
 #include <rules.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <updates.h>
 
 char *read_input_to_str(char *file_name);
 
@@ -28,7 +31,26 @@ int main() {
     strcpy(updates_str, token + 2);
 
     rules_graph rules = init_rules_graph(rules_str, 99);
+    UpdateList *updates = parse_updates_str(updates_str, 208);
 
+    // Part 1
+
+    UpdateList *ordered_updates = filter_ordered_updates(updates, rules);
+    if (!ordered_updates)
+        return EXIT_FAILURE;
+    
+    uint part_1 = 0;
+    for (size_t i = 0; i < ordered_updates->num_updates; i++) {
+        uint *current = ordered_updates->updates[i]->uints;
+        size_t current_len = ordered_updates->updates[i]->size;
+        part_1 += current[current_len/2];
+    }
+
+    //--------------
+    
+    printf("Part 1: %u\n", part_1);
+
+    free_update_list(&updates);
     free(input_str);
     free(rules_str);
     free(updates_str);

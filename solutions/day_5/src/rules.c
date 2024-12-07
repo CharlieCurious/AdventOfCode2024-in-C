@@ -37,10 +37,12 @@ rules_graph init_rules_graph(char *rules_str, unsigned int max_page_number) {
                 longjmp(exception, LINE_ALLOC_EX);
         }
 
-        char *line = strtok(rules_str, "\n");
+
+        char *tokenptr3;
+        char *line = strtok_r(rules_str, "\n", &tokenptr3);
         while (line != NULL) {
             insert_rule(graph, line);        
-            line = strtok(NULL, "\n");
+            line = strtok_r(NULL, "\n", &tokenptr3);
         }
     }
 
