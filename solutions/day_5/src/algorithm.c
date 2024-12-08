@@ -31,6 +31,21 @@ UpdateList *filter_updates(const UpdateList *updates, const rules_graph rules, b
     return filtered;
 }
 
+void fix_update(ListUInt *update, rules_graph rules) {
+    uint *pages = update->uints;
+    size_t n = update->size;
+
+    for (size_t i = 0; i < n - 1; i++) {
+        for (size_t j = 0; j < n - i - 1; j++) {
+            if (rules[pages[j]][pages[j + 1]]) {
+                uint temp = pages[j];
+                pages[j] = pages[j + 1];
+                pages[j + 1] = temp;
+            }
+        }
+    }
+}
+
 static bool is_update_in_order(const ListUInt *single_update, const rules_graph rules) {
 
     bool error_detected = false;

@@ -47,8 +47,20 @@ int main() {
     }
 
     //--------------
+    // Part 2
+
+    UpdateList *unordered_updates = filter_updates(updates, rules, false);
+
+    uint part_2 = 0;
+    for (size_t i = 0; i < unordered_updates->num_updates; i++) {
+        ListUInt *current = unordered_updates->updates[i];
+        size_t current_len = unordered_updates->updates[i]->size;
+        fix_update(current, rules);
+        part_2 += current->uints[current_len/2];
+    }
+
     
-    printf("Part 1: %u\n", part_1);
+    printf("Part 1: %u\nPart 2: %u\n", part_1, part_2);
 
     free_update_list(&updates);
     free(input_str);
