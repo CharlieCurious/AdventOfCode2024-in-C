@@ -20,7 +20,7 @@ int main() {
     char buffer[MAX_LINE_LEN];
     size_t line_count = 0;
     size_t guard_x, guard_y;
-    const char guard_symbol = '^';
+    const char guard_symbol = GUARD;
     while (fgets(buffer, sizeof(buffer), file) && line_count < MAX_FILE_LINES) {
         buffer[strlen(buffer) - 1] = '\0';
         lines[line_count] = strdup(buffer);
