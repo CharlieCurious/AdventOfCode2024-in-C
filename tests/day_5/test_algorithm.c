@@ -46,9 +46,29 @@ void should_get_ordered_updates() {
 
     UpdateList *result = filter_updates(updates, rules, true);
 
+    TEST_ASSERT_EQUAL_size_t(3, result->num_updates);
     TEST_ASSERT_EQUAL_UINT_ARRAY_MESSAGE(result0, result->updates[0]->uints, 5, "Assert result[0]");
     TEST_ASSERT_EQUAL_UINT_ARRAY_MESSAGE(result1, result->updates[1]->uints, 5, "Assert result[1]");
     TEST_ASSERT_EQUAL_UINT_ARRAY_MESSAGE(result2, result->updates[2]->uints, 3, "Assert result[2]");
+    free(result);
+    free(updates);
+}
+
+void should_get_unordered_updates() {
+
+    char test_rules[] = "14|5\n7|8";
+    char test_updates[] = "14,7,8,5\n5,7,12,14,8\n";
+    rules_graph rules = init_rules_graph(test_rules, 99);
+    UpdateList *updates = parse_updates_str(test_updates, 2);
+
+    uint expected_result[] = { 5, 7, 12, 14, 8 };
+
+    UpdateList *result = filter_updates(updates, rules, false);
+
+    TEST_ASSERT_EQUAL_size_t(1, result->num_updates);
+    TEST_ASSERT_EQUAL_UINT_ARRAY(expected_result, result->updates[0]->uints, 5);
+    free(updates);
+    free(result);
 }
 
 
@@ -58,5 +78,6 @@ void tearDown() {
 int main() {
     UNITY_BEGIN();
     RUN_TEST(should_get_ordered_updates);
+    RUN_TEST(should_get_unordered_updates);
     return UNITY_END();
 }

@@ -20,17 +20,8 @@ UpdateList *filter_updates(const UpdateList *updates, const rules_graph rules, b
     }
 
     UpdateList *filtered = (UpdateList *)malloc(sizeof(UpdateList));
-    if (!filtered) {
-        perror("Failed to allocate for filtered updates");
-        return NULL;
-    }
 
     ListUInt **ordered_updates = (ListUInt **)malloc(count * sizeof(ListUInt *));
-    if (!ordered_updates) {
-        perror("Failed to allocate for filtered updates");
-        free(filtered);
-        return NULL;
-    }
 
     memcpy(ordered_updates, ordered_updates_buffer, count * sizeof(ListUInt *));
 
@@ -44,8 +35,10 @@ static bool is_update_in_order(const ListUInt *single_update, const rules_graph 
 
     bool error_detected = false;
     for (size_t i = 0; i < single_update->size - 1; i++) {
-        if (contains_rule(rules, single_update->uints[i+1], single_update->uints[i]))
+        for (size_t j = i + 1; j < single_update->size; j++) {
+            if (rules[single_update->uints[j]][single_update->uints[i]])
                 return false;
+        }
     }
     return true;
 }

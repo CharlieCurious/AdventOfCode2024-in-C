@@ -49,10 +49,6 @@ rules_graph init_rules_graph(char *rules_str, unsigned int max_page_number) {
     return graph;
 }
 
-bool contains_rule(rules_graph graph, unsigned int first, unsigned int next) {
-    return graph[first][next];
-}
-
 static void insert_rule(rules_graph graph, char *rule) {
     unsigned int first, next;
     int rule_parsing_result = sscanf(rule, "%u|%u", &first, &next);
