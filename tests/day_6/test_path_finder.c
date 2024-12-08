@@ -1,4 +1,3 @@
-#include "unity_internals.h"
 #include <path_finder.h>
 #include <stdio.h>
 #include <unity.h>
@@ -33,7 +32,7 @@ char expected_end_map[10][10] = {
 Grid *grid;
 
 void setUp() {
-    grid = (Grid *)malloc(10 * sizeof(char *));
+    grid = (Grid *)malloc(sizeof(Grid));
     grid->width = 10;
     grid->height = 10;
     grid->map = (char **)malloc(10 * sizeof(char *));
@@ -78,13 +77,6 @@ void should_sum_and_check_if_not_yet_visited() {
 
 void should_follow_path_and_sum_correctly() {
     uint sum = follow_col_north(grid, 6, 4, 0);
-    for (size_t i = 0; i < grid->height; i++) {
-        for (size_t j = 0; j < grid->width; j++) {
-            printf("%c ", grid->map[i][j]); // Print each character with a space
-        }
-        printf("\n"); // Newline after each row
-    }
-
     TEST_ASSERT_EQUAL_UINT_MESSAGE(41, sum, "Assert right sum");
 }
 

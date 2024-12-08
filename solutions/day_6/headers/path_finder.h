@@ -13,6 +13,7 @@ typedef struct Grid {
     char **map;
 } Grid;
 
+void print_grid(Grid *grid, uint sum); 
 uint follow_line_west(Grid *grid, size_t x, size_t y, uint sum);
 uint follow_line_east(Grid *grid, size_t x, size_t y, uint sum);
 uint follow_col_north(Grid *grid, size_t x, size_t y, uint sum);
