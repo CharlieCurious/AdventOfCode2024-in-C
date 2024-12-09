@@ -3,6 +3,7 @@
 #define OBSTRUCTION '#'
 #define GUARD '^'
 #define VISITED 'X'
+#define PRINTER 'O'
 
 #include <path_tracer.h>
 #include <stddef.h>
