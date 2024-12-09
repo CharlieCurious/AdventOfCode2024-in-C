@@ -53,7 +53,7 @@ uint follow_col_north(Grid *grid, Step step, uint sum) {
     while (step.x > 0) {
 
         if (grid->map[step.x-1][step.y] == OBSTRUCTION) {
-            Step next_step = step_create(step.x, step.y + 1, WEST);
+            Step next_step = step_create(step.x, step.y + 1, EAST);
             return follow_line_west(grid, next_step, sum);
         }
 
@@ -69,7 +69,7 @@ uint follow_col_south(Grid *grid, Step step, uint sum) {
 
     while (step.x < grid->height - 1) {
         if (grid->map[step.x+1][step.y] == OBSTRUCTION) {
-            Step next_step = step_create(step.x, step.y - 1, EAST);
+            Step next_step = step_create(step.x, step.y - 1, WEST);
             return follow_line_east(grid, next_step, sum);
         }
 

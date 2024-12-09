@@ -92,6 +92,10 @@ void should_mark_correct_path_as_visited() {
     }
 }
 
+void should_detect_cycle() {
+
+}
+
 void tearDown() {
     if (!grid)
         return;
