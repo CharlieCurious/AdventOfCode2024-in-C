@@ -40,11 +40,13 @@ int main() {
     grid->height = line_count;
     grid->map = lines;
 
-    // for debugging
-    //print_grid(grid, 0);
+    HashSet *path_tracer;
 
+    path_tracer = hashset_create(grid->height * grid->width);
     Step first_step = step_create(guard_x, guard_y, NORTH);
-    uint part_1 = follow_col_north(grid, first_step, 0);
+    uint part_1 = follow_col_north(grid, first_step, 0, path_tracer);
+    hashset_free(path_tracer);
+    path_tracer = NULL;
 
     printf("Part 1: %u\n", part_1);
 

@@ -31,6 +31,7 @@ char expected_end_map[10][10] = {
 };
 
 Grid *grid;
+HashSet *path_tracer;
 
 void setUp() {
     grid = (Grid *)malloc(sizeof(Grid));
@@ -44,6 +45,8 @@ void setUp() {
             grid->map[i][j] = test_map[i][j];
         }
     }
+
+    path_tracer = hashset_create(100);
 }
 
 void should_sum_and_check_if_not_yet_visited() {
@@ -78,13 +81,13 @@ void should_sum_and_check_if_not_yet_visited() {
 
 void should_follow_path_and_sum_correctly() {
     Step first_step = step_create(6, 4, NORTH);
-    uint sum = follow_col_north(grid, first_step, 0);
+    uint sum = follow_col_north(grid, first_step, 0, path_tracer);
     TEST_ASSERT_EQUAL_UINT_MESSAGE(41, sum, "Assert right sum");
 }
 
 void should_mark_correct_path_as_visited() {
     Step first_step = step_create(6, 4, NORTH);
-    uint sum = follow_col_north(grid, first_step, 0);
+    uint sum = follow_col_north(grid, first_step, 0, path_tracer);
     for (size_t x = 0; x < 10; x++) {
         char message[40];
         snprintf(message, sizeof(message), "Assert line [%zu] marked visited", x);
@@ -106,6 +109,9 @@ void tearDown() {
     free(grid->map);
     free(grid);
     grid = NULL;
+
+    hashset_free(path_tracer);
+    path_tracer = NULL;
 }
 
 int main() {

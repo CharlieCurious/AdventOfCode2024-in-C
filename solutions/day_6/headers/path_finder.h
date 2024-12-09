@@ -16,8 +16,8 @@ typedef struct Grid {
 } Grid;
 
 void print_grid(Grid *grid, uint sum); 
-uint follow_line_west(Grid *grid, Step step, uint sum);
-uint follow_line_east(Grid *grid, Step step, uint sum);
-uint follow_col_north(Grid *grid, Step step, uint sum);
-uint follow_col_south(Grid *grid, Step step, uint sum);
+uint follow_line_west(Grid *grid, Step step, uint sum, HashSet *path_tracer);
+uint follow_line_east(Grid *grid, Step step, uint sum, HashSet *path_tracer);
+uint follow_col_north(Grid *grid, Step step, uint sum, HashSet *path_tracer);
+uint follow_col_south(Grid *grid, Step step, uint sum, HashSet *path_tracer);
 void sum_and_check_if_not_yet_visited(char **checked, size_t x, size_t y, uint *sum);
