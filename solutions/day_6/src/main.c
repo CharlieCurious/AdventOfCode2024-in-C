@@ -1,4 +1,5 @@
 #include <path_finder.h>
+#include <path_tracer.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -42,7 +43,8 @@ int main() {
     // for debugging
     //print_grid(grid, 0);
 
-    uint part_1 = follow_col_north(grid, guard_x, guard_y, 0);
+    Step first_step = step_create(guard_x, guard_y, NORTH);
+    uint part_1 = follow_col_north(grid, first_step, 0);
 
     printf("Part 1: %u\n", part_1);
 

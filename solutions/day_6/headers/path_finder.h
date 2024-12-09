@@ -4,6 +4,7 @@
 #define GUARD '^'
 #define VISITED 'X'
 
+#include <path_tracer.h>
 #include <stddef.h>
 #include <sys/types.h>
 
@@ -14,8 +15,8 @@ typedef struct Grid {
 } Grid;
 
 void print_grid(Grid *grid, uint sum); 
-uint follow_line_west(Grid *grid, size_t x, size_t y, uint sum);
-uint follow_line_east(Grid *grid, size_t x, size_t y, uint sum);
-uint follow_col_north(Grid *grid, size_t x, size_t y, uint sum);
-uint follow_col_south(Grid *grid, size_t x, size_t y, uint sum);
+uint follow_line_west(Grid *grid, Step step, uint sum);
+uint follow_line_east(Grid *grid, Step step, uint sum);
+uint follow_col_north(Grid *grid, Step step, uint sum);
+uint follow_col_south(Grid *grid, Step step, uint sum);
 void sum_and_check_if_not_yet_visited(char **checked, size_t x, size_t y, uint *sum);

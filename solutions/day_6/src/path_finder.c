@@ -1,3 +1,4 @@
+#include "path_tracer.h"
 #include <path_finder.h>
 #include <stdio.h>
 
@@ -10,57 +11,70 @@ void print_grid(Grid *grid, uint sum) {
         }
         printf("\n");
     }
-    printf("==========================\n"); }
+    printf("==========================\n"); 
+}
 
-uint follow_line_west(Grid *grid, size_t x, size_t y, uint sum) {
-    sum_and_check_if_not_yet_visited(grid->map, x, y, &sum);
+uint follow_line_west(Grid *grid, Step step, uint sum) {
+    sum_and_check_if_not_yet_visited(grid->map, step.x, step.y, &sum);
 
-    while (y < grid->width - 1) {
-        if (grid->map[x][y+1] == OBSTRUCTION)
-            return follow_col_south(grid, x + 1, y, sum);
+    while (step.y < grid->width - 1) {
+        if (grid->map[step.x][step.y+1] == OBSTRUCTION) {
+            Step next_step = step_create(step.x + 1, step.y, SOUTH);
+            return follow_col_south(grid, next_step, sum);
+        }
 
-        return follow_line_west(grid, x, y + 1, sum);
+        Step next_step = step_create(step.x, step.y + 1, WEST);
+        return follow_line_west(grid, next_step, sum);
     }
 
     return sum;
 }
 
-uint follow_line_east(Grid *grid, size_t x, size_t y, uint sum){
-    sum_and_check_if_not_yet_visited(grid->map, x, y, &sum);
+uint follow_line_east(Grid *grid, Step step, uint sum){
+    sum_and_check_if_not_yet_visited(grid->map, step.x, step.y, &sum);
 
-    while (y > 0) {
+    while (step.y > 0) {
 
-        if (grid->map[x][y-1] == OBSTRUCTION)
-            return follow_col_north(grid, x - 1, y, sum);
+        if (grid->map[step.x][step.y-1] == OBSTRUCTION) {
+            Step next_step = step_create(step.x - 1, step.y, NORTH);
+            return follow_col_north(grid, next_step, sum);
+        }
 
-        return follow_line_east(grid, x, y - 1, sum);
+        Step next_step = step_create(step.x, step.y - 1, EAST);
+        return follow_line_east(grid, next_step, sum);
     }
 
     return sum;
 }
 
-uint follow_col_north(Grid *grid, size_t x, size_t y, uint sum) {
-    sum_and_check_if_not_yet_visited(grid->map, x, y, &sum);
+uint follow_col_north(Grid *grid, Step step, uint sum) {
+    sum_and_check_if_not_yet_visited(grid->map, step.x, step.y, &sum);
 
-    while (x > 0) {
+    while (step.x > 0) {
 
-        if (grid->map[x-1][y] == OBSTRUCTION)
-            return follow_line_west(grid, x, y + 1, sum);
+        if (grid->map[step.x-1][step.y] == OBSTRUCTION) {
+            Step next_step = step_create(step.x, step.y + 1, WEST);
+            return follow_line_west(grid, next_step, sum);
+        }
 
-        return follow_col_north(grid, x - 1, y, sum);
+        Step next_step = step_create(step.x - 1, step.y, NORTH);
+        return follow_col_north(grid, next_step, sum);
     }
 
     return sum;
 }
 
-uint follow_col_south(Grid *grid, size_t x, size_t y, uint sum) {
-    sum_and_check_if_not_yet_visited(grid->map, x, y, &sum);
+uint follow_col_south(Grid *grid, Step step, uint sum) {
+    sum_and_check_if_not_yet_visited(grid->map, step.x, step.y, &sum);
 
-    while ( x < grid->height - 1) {
-        if (grid->map[x+1][y] == OBSTRUCTION)
-            return follow_line_east(grid, x, y - 1, sum);
+    while (step.x < grid->height - 1) {
+        if (grid->map[step.x+1][step.y] == OBSTRUCTION) {
+            Step next_step = step_create(step.x, step.y - 1, EAST);
+            return follow_line_east(grid, next_step, sum);
+        }
 
-        return follow_col_south(grid, x + 1, y, sum);
+        Step next_step = step_create(step.x + 1, step.y, SOUTH);
+        return follow_col_south(grid, next_step, sum);
     }
 
     return sum;
