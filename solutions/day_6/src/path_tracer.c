@@ -5,6 +5,14 @@ static size_t hash(Step key, size_t capacity);
 static bool step_equals(Step this, Step that);
 static void resize(HashSet * set);
 
+Step step_create(size_t current_x, size_t current_y, Direction direction) {
+    Step step;
+    step.x = current_x;
+    step.y = current_y;
+    step.direction = direction;
+    return step;
+}
+
 HashSet *hashset_create(size_t initial_capacity) {
     HashSet *set = (HashSet *)malloc(sizeof(HashSet));
     set->size = 0;
@@ -61,7 +69,7 @@ void hashset_free(HashSet *set) {
     if (!set)
         return;
 
-    for (size_t i = 0; i < set->size; i++) {
+    for (size_t i = 0; i < set->capacity; i++) {
         Node *current = set->nodes[i];
         while (current) {
             Node *next = current->next;

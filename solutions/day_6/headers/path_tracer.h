@@ -27,6 +27,7 @@ typedef struct HashSet {
     size_t capacity;
 } HashSet;
 
+Step step_create(size_t current_x, size_t current_y, Direction direction);
 HashSet *hashset_create(size_t initial_capacity);
 bool hashset_insert(HashSet *set, Step value);
 void hashset_free(HashSet *set);
