@@ -19,13 +19,15 @@ static bool is_obstructed(Grid *grid, size_t x, size_t y);
 uint follow_line_west(Grid *grid, Step step, uint sum) {
     sum_and_check_if_not_yet_visited(grid->map, step.x, step.y, &sum);
 
+    Step next_step;
     while (step.y < grid->width - 1) {
         if (is_obstructed(grid, step.x, step.y + 1)) {
-            Step next_step = step_create(step.x + 1, step.y, SOUTH);
+            next_step = step_create(step.x + 1, step.y, SOUTH);
+
             return follow_col_south(grid, next_step, sum);
         }
 
-        Step next_step = step_create(step.x, step.y + 1, WEST);
+        next_step = step_create(step.x, step.y + 1, WEST);
         return follow_line_west(grid, next_step, sum);
     }
 
@@ -35,13 +37,14 @@ uint follow_line_west(Grid *grid, Step step, uint sum) {
 uint follow_line_east(Grid *grid, Step step, uint sum){
     sum_and_check_if_not_yet_visited(grid->map, step.x, step.y, &sum);
 
+    Step next_step;
     while (step.y > 0) {
         if (is_obstructed(grid, step.x, step.y - 1)) {
-            Step next_step = step_create(step.x - 1, step.y, NORTH);
+            next_step = step_create(step.x - 1, step.y, NORTH);
             return follow_col_north(grid, next_step, sum);
         }
 
-        Step next_step = step_create(step.x, step.y - 1, EAST);
+        next_step = step_create(step.x, step.y - 1, EAST);
         return follow_line_east(grid, next_step, sum);
     }
 
@@ -51,13 +54,14 @@ uint follow_line_east(Grid *grid, Step step, uint sum){
 uint follow_col_north(Grid *grid, Step step, uint sum) {
     sum_and_check_if_not_yet_visited(grid->map, step.x, step.y, &sum);
 
+    Step next_step;
     while (step.x > 0) {
         if (is_obstructed(grid, step.x - 1, step.y)) {
-            Step next_step = step_create(step.x, step.y + 1, EAST);
+            next_step = step_create(step.x, step.y + 1, EAST);
             return follow_line_west(grid, next_step, sum);
         }
 
-        Step next_step = step_create(step.x - 1, step.y, NORTH);
+        next_step = step_create(step.x - 1, step.y, NORTH);
         return follow_col_north(grid, next_step, sum);
     }
 
@@ -67,13 +71,14 @@ uint follow_col_north(Grid *grid, Step step, uint sum) {
 uint follow_col_south(Grid *grid, Step step, uint sum) {
     sum_and_check_if_not_yet_visited(grid->map, step.x, step.y, &sum);
 
+    Step next_step;
     while (step.x < grid->height - 1) {
         if (is_obstructed(grid, step.x + 1, step.y)) {
-            Step next_step = step_create(step.x, step.y - 1, WEST);
+            next_step = step_create(step.x, step.y - 1, WEST);
             return follow_line_east(grid, next_step, sum);
         }
 
-        Step next_step = step_create(step.x + 1, step.y, SOUTH);
+        next_step = step_create(step.x + 1, step.y, SOUTH);
         return follow_col_south(grid, next_step, sum);
     }
 
