@@ -58,7 +58,7 @@ void should_sum_and_check_if_not_yet_visited() {
     map_ref[0] = map[0];
     map_ref[1] = map[1];
 
-    uint sum = 0;
+    int sum = 0;
 
     for (size_t i = 0; i < 2; i++) {
         for (size_t j = 0; j < 2; j++) {

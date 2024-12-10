@@ -44,7 +44,7 @@ int main() {
 
     path_tracer = hashset_create(grid->height * grid->width);
     Step first_step = step_create(guard_x, guard_y, NORTH);
-    uint part_1 = follow_col_north(grid, first_step, 0, path_tracer);
+    int part_1 = follow_col_north(grid, first_step, 0, path_tracer);
     hashset_free(path_tracer);
     path_tracer = NULL;
 
