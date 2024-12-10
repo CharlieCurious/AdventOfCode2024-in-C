@@ -19,7 +19,6 @@ static bool is_obstructed(Grid *grid, size_t x, size_t y);
 
 int follow_line_west(Grid *grid, Step step, int sum, HashSet *path_tracer) {
     if (!hashset_insert(path_tracer, step)) {
-        grid->map[step.x][step.y] = '<';
         return -1;
     }
 
@@ -28,9 +27,9 @@ int follow_line_west(Grid *grid, Step step, int sum, HashSet *path_tracer) {
     Step next_step;
     while (step.y < grid->width - 1) {
         if (is_obstructed(grid, step.x, step.y - 1)) {
-            if (is_obstructed(grid, step.x + 1, step.y)) {
-                next_step = step_create(step.x, step.y - 1, EAST);
-                follow_line_east(grid, next_step, sum, path_tracer);
+            if (is_obstructed(grid, step.x - 1, step.y)) {
+                next_step = step_create(step.x, step.y + 1, EAST);
+                return follow_line_east(grid, next_step, sum, path_tracer);
             }
             next_step = step_create(step.x - 1, step.y, NORTH);
 
@@ -45,7 +44,6 @@ int follow_line_west(Grid *grid, Step step, int sum, HashSet *path_tracer) {
 
 int follow_line_east(Grid *grid, Step step, int sum, HashSet *path_tracer){
     if (!hashset_insert(path_tracer, step)) {
-        grid->map[step.x][step.y] = '>';
         return -1;
     }
 
@@ -54,7 +52,7 @@ int follow_line_east(Grid *grid, Step step, int sum, HashSet *path_tracer){
     Step next_step;
     while (step.y > 0) {
         if (is_obstructed(grid, step.x, step.y + 1)) {
-            if (is_obstructed(grid, step.x - 1, step.y)) {
+            if (is_obstructed(grid, step.x + 1, step.y)) {
                 next_step = step_create(step.x, step.y - 1, WEST);
                 return follow_line_west(grid, next_step, sum, path_tracer);
             }
@@ -66,13 +64,11 @@ int follow_line_east(Grid *grid, Step step, int sum, HashSet *path_tracer){
         return follow_line_east(grid, next_step, sum, path_tracer);
     }
 
-    grid->map[step.x][step.y] = '>';
     return sum;
 }
 
 int follow_col_north(Grid *grid, Step step, int sum, HashSet *path_tracer) {
     if (!hashset_insert(path_tracer, step)) {
-        grid->map[step.x][step.y] = '^';
         return -1;
     }
 
@@ -82,7 +78,7 @@ int follow_col_north(Grid *grid, Step step, int sum, HashSet *path_tracer) {
     while (step.x > 0) {
         if (is_obstructed(grid, step.x - 1, step.y)) {
             if (is_obstructed(grid, step.x, step.y + 1)) {
-                next_step = step_create(step.x - 1, step.y, SOUTH);
+                next_step = step_create(step.x + 1, step.y, SOUTH);
                 return follow_col_south(grid, next_step, sum, path_tracer);
             }
             next_step = step_create(step.x, step.y + 1, EAST);
@@ -93,13 +89,11 @@ int follow_col_north(Grid *grid, Step step, int sum, HashSet *path_tracer) {
         return follow_col_north(grid, next_step, sum, path_tracer);
     }
 
-    grid->map[step.x][step.y] = '^';
     return sum;
 }
 
 int follow_col_south(Grid *grid, Step step, int sum, HashSet *path_tracer) {
     if (!hashset_insert(path_tracer, step)) {
-        grid->map[step.x][step.y] = 'v';
         return -1;
     }
 
@@ -110,7 +104,7 @@ int follow_col_south(Grid *grid, Step step, int sum, HashSet *path_tracer) {
         if (is_obstructed(grid, step.x + 1, step.y)) {
             if (is_obstructed(grid, step.x, step.y - 1)) {
                 next_step = step_create(step.x - 1, step.y, NORTH);     
-                follow_col_north(grid, next_step, sum, path_tracer);
+                return follow_col_north(grid, next_step, sum, path_tracer);
             }
             next_step = step_create(step.x, step.y - 1, EAST);
             return follow_line_west(grid, next_step, sum, path_tracer);
@@ -120,7 +114,6 @@ int follow_col_south(Grid *grid, Step step, int sum, HashSet *path_tracer) {
         return follow_col_south(grid, next_step, sum, path_tracer);
     }
 
-    grid->map[step.x][step.y] = 'v';
     return sum;
 }
 

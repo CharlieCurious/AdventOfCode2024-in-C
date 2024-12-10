@@ -36,7 +36,7 @@ Grid *grid_create(FILE *file) {
     grid->width = 10;
     grid->height = 10;
     grid->map = lines;
-    
+
     rewind(file);
     return grid;
 }
@@ -52,12 +52,11 @@ int main() {
     HashSet *path_tracer;
 
     path_tracer = hashset_create(grid_part_1->height * grid_part_1->width);
-    Step first_step = step_create(6, 4, NORTH);
+    Step first_step = step_create(GUARD_X, GUARD_Y, NORTH);
     int part_1 = follow_col_north(grid_part_1, first_step, 0, path_tracer);
     hashset_free(path_tracer);
     path_tracer = NULL;
 
-    print_grid(grid_part_1, part_1);
 
     int part_2 = 0;
     for (size_t x = 0; x < grid_part_1->height; x++) {
@@ -71,8 +70,8 @@ int main() {
 
             if (follow_col_north(grid_part_2, first_step, 0, path_tracer) == -1) {
                 part_2++;
-                puts("FOUND LOOP");
-                print_grid(grid_part_2, part_2);
+                puts("found loop");
+                print_grid(grid_part_2, x);
             }
 
             // free
@@ -83,6 +82,7 @@ int main() {
         }
     }
 
+    fclose(file);
     printf("Part 1: %d\nPart 2: %d\n", part_1, part_2);
 
     return EXIT_SUCCESS;
