@@ -4,8 +4,8 @@
 #include <string.h>
 
 #define MAX_FILE_SIZE 1048576 // 1 MB
-#define MAX_NUMBER_OF_LINES 1024
-#define MAX_LINE_LENGHT 256
+#define MAX_NUMBER_OF_LINES 5000
+#define MAX_LINE_LENGHT 5000
 
 FILE *open_input_file(const char *file_path) {
     FILE *file = fopen(file_path, "r");
