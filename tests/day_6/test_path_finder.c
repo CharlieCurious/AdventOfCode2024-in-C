@@ -1,3 +1,4 @@
+#include "unity_internals.h"
 #include <path_tracer.h>
 #include <path_finder.h>
 #include <stdio.h>
@@ -81,13 +82,13 @@ void should_sum_and_check_if_not_yet_visited() {
 
 void should_follow_path_and_sum_correctly() {
     Step first_step = step_create(6, 4, NORTH);
-    uint sum = follow_col_north(grid, first_step, 0, path_tracer);
-    TEST_ASSERT_EQUAL_UINT_MESSAGE(41, sum, "Assert right sum");
+    int sum = follow_col_north(grid, first_step, 0, path_tracer);
+    TEST_ASSERT_EQUAL_INT_MESSAGE(41, sum, "Assert right sum");
 }
 
 void should_mark_correct_path_as_visited() {
     Step first_step = step_create(6, 4, NORTH);
-    uint sum = follow_col_north(grid, first_step, 0, path_tracer);
+    int sum = follow_col_north(grid, first_step, 0, path_tracer);
     for (size_t x = 0; x < 10; x++) {
         char message[40];
         snprintf(message, sizeof(message), "Assert line [%zu] marked visited", x);
@@ -96,7 +97,12 @@ void should_mark_correct_path_as_visited() {
 }
 
 void should_detect_cycle() {
+    grid->map[6][3] = PRINTER;
+    Step first_step = step_create(6, 4, NORTH);
 
+    int sum = follow_col_north(grid, first_step, 0, path_tracer);
+
+    TEST_ASSERT_EQUAL_INT_MESSAGE(-1, sum, "Test cycle detected");
 }
 
 void tearDown() {
@@ -119,5 +125,6 @@ int main() {
     RUN_TEST(should_sum_and_check_if_not_yet_visited);
     RUN_TEST(should_follow_path_and_sum_correctly);
     RUN_TEST(should_mark_correct_path_as_visited);
+    RUN_TEST(should_detect_cycle);
     return UNITY_END();
 }

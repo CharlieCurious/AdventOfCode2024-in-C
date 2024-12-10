@@ -17,6 +17,9 @@ void print_grid(Grid *grid, uint sum) {
 static bool is_obstructed(Grid *grid, size_t x, size_t y);
 
 int follow_line_west(Grid *grid, Step step, int sum, HashSet *path_tracer) {
+    if (!hashset_insert(path_tracer, step))
+        return -1;
+
     sum_and_check_if_not_yet_visited(grid->map, step.x, step.y, &sum);
 
     Step next_step;
@@ -38,6 +41,9 @@ int follow_line_west(Grid *grid, Step step, int sum, HashSet *path_tracer) {
 }
 
 int follow_line_east(Grid *grid, Step step, int sum, HashSet *path_tracer){
+    if (!hashset_insert(path_tracer, step))
+        return -1;
+
     sum_and_check_if_not_yet_visited(grid->map, step.x, step.y, &sum);
 
     Step next_step;
@@ -58,6 +64,9 @@ int follow_line_east(Grid *grid, Step step, int sum, HashSet *path_tracer){
 }
 
 int follow_col_north(Grid *grid, Step step, int sum, HashSet *path_tracer) {
+    if (!hashset_insert(path_tracer, step))
+        return -1;
+
     sum_and_check_if_not_yet_visited(grid->map, step.x, step.y, &sum);
 
     Step next_step;
@@ -78,6 +87,9 @@ int follow_col_north(Grid *grid, Step step, int sum, HashSet *path_tracer) {
 }
 
 int follow_col_south(Grid *grid, Step step, int sum, HashSet *path_tracer) {
+    if (!hashset_insert(path_tracer, step))
+        return -1;
+
     sum_and_check_if_not_yet_visited(grid->map, step.x, step.y, &sum);
 
     Step next_step;
