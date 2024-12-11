@@ -7,8 +7,8 @@
 #include <string.h>
 #include <sys/types.h>
 
-#define GUARD_X 6
-#define GUARD_Y 4
+#define GUARD_X 70
+#define GUARD_Y 60
 #define MAX_FILE_LINES 1000
 #define MAX_LINE_LEN 1000
 
@@ -33,8 +33,8 @@ Grid *grid_create(FILE *file) {
     }
 
     Grid *grid = (Grid *)malloc(sizeof(Grid));
-    grid->width = 10;
-    grid->height = 10;
+    grid->width = 130;
+    grid->height = 130;
     grid->map = lines;
 
     rewind(file);
@@ -61,24 +61,22 @@ int main() {
     int part_2 = 0;
     for (size_t x = 0; x < grid_part_1->height; x++) {
         for (size_t y = 0; y < grid_part_1->width; y++) {
-            // create new grid
-            Grid *grid_part_2 = grid_create(file);
-            grid_part_2->map[x][y] = PRINTER;
+            if (grid_part_1->map[x][y] == VISITED) {
+                // create new grid
+                // don't do this, don't read the file every time.
+                Grid *grid_part_2 = grid_create(file);
+                grid_part_2->map[x][y] = PRINTER;
 
-            first_step = step_create(GUARD_X, GUARD_Y, NORTH);
-            HashSet *path_tracer = hashset_create(grid_part_2->height * grid_part_2->width);
+                HashSet *path_tracer = hashset_create(grid_part_2->height * grid_part_2->width);
 
-            if (follow_col_north(grid_part_2, first_step, 0, path_tracer) == -1) {
-                part_2++;
-                puts("found loop");
-                print_grid(grid_part_2, x);
+                if (follow_col_north(grid_part_2, first_step, 0, path_tracer) == -1) {
+                    part_2++;
+                }
+
+                //TODO properly free resources, there's a memory leak
+                path_tracer = NULL;
+                grid_part_2 = NULL;
             }
-
-            // free
-            //hashset_free(path_tracer);
-            path_tracer = NULL;
-            //free(grid_part_2);
-            grid_part_2 = NULL;
         }
     }
 

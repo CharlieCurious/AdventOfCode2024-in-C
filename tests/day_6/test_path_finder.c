@@ -6,16 +6,16 @@
 #include <stdlib.h>
 
 char test_map[10][10] = {
-    { '.', '.', '.', '.', '#', '.', '.', '.', '.', '.' },
-    { '.', '.', '.', '.', '.', '.', '.', '.', '.', '#' },
-    { '.', '.', '.', '.', '.', '.', '.', '.', '.', '.' },
-    { '.', '.', '#', '.', '.', '.', '.', '.', '.', '.' },
-    { '.', '.', '.', '.', '.', '.', '.', '#', '.', '.' },
-    { '.', '.', '.', '.', '.', '.', '.', '.', '.', '.' },
-    { '.', '#', '.', '.', '^', '.', '.', '.', '.', '.' },
-    { '.', '.', '.', '.', '.', '.', '.', '.', '#', '.' },
-    { '#', '.', '.', '.', '.', '.', '.', '.', '.', '.' },
-    { '.', '.', '.', '.', '.', '.', '#', '.', '.', '.' }
+    "....#.....",
+    ".........#",
+    "..........",
+    "..#.......",
+    ".......#..",
+    "..........",
+    ".#..^.....",
+    "........#.",
+    "#.........",
+    "......#...",
 };
 
 char expected_end_map[10][10] = {
@@ -105,6 +105,17 @@ void should_detect_cycle() {
     TEST_ASSERT_EQUAL_INT_MESSAGE(-1, sum, "Test cycle detected");
 }
 
+void should_not_detect_cycle() {
+    grid->map[5][2] = PRINTER;
+    Step first_step = step_create(6, 4, NORTH);
+
+    int sum = follow_col_north(grid, first_step, 0, path_tracer);
+    print_grid(grid, sum);
+
+    TEST_ASSERT_NOT_EQUAL_INT_MESSAGE(-1, sum, "Test no cycle detected");
+}
+
+
 void tearDown() {
     if (!grid)
         return;
@@ -126,5 +137,6 @@ int main() {
     RUN_TEST(should_follow_path_and_sum_correctly);
     RUN_TEST(should_mark_correct_path_as_visited);
     RUN_TEST(should_detect_cycle);
+    RUN_TEST(should_not_detect_cycle);
     return UNITY_END();
 }
