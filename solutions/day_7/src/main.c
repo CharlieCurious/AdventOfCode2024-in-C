@@ -1,26 +1,10 @@
+#include <permutations.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #define NUM_EQUATIONS 850 
-
-typedef struct Equation {
-    int result;
-    int *numbers;
-    bool is_valid;
-} Equation;
-
-void equations_free(Equation **equations) {
-    for (size_t i = 0; i < NUM_EQUATIONS; i++) {
-        if (equations[i]) {
-            if (equations[i]->numbers)
-                free(equations[i]->numbers);
-            free(equations[i]);
-        }
-    }
-    free(equations);
-}
 
 Equation **read_from_file(char *file_name) {
     FILE *file = fopen(file_name, "r");
@@ -62,7 +46,7 @@ Equation **read_from_file(char *file_name) {
 
         equation->result = result;
         equation->numbers = numbers;
-        equation->is_valid = false;     //set to false as defaults
+        equation->numbers_count = count;
 
         equations[line_index++] = equation;
     }
@@ -72,7 +56,7 @@ Equation **read_from_file(char *file_name) {
 
 free_equations:
     perror("malloc for equations failed");
-    equations_free(equations);
+    equations_free(equations, NUM_EQUATIONS);
 
 
 close_file:
@@ -86,6 +70,6 @@ int main() {
     if (!equations)
         return EXIT_FAILURE;
 
-    equations_free(equations);
+    equations_free(equations, NUM_EQUATIONS);
 }
 
