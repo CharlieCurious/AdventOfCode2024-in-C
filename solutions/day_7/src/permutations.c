@@ -1,7 +1,10 @@
 #include <permutations.h>
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+static long long concatenate(long long a, long long b);
 
 void permutations_generate(
         char **permutations, 
@@ -23,6 +26,9 @@ void permutations_generate(
 
     slots[index] = '*';
     permutations_generate(permutations, count, slots, n, index + 1);
+
+    slots[index] = '|';
+    permutations_generate(permutations, count, slots, n, index + 1);
 }
 
 bool has_possible_equation(Equation *equation, char **permutations, size_t permutations_num) {
@@ -32,10 +38,13 @@ bool has_possible_equation(Equation *equation, char **permutations, size_t permu
         result = equation->numbers[0];
 
         for (size_t j = 1; j < equation->numbers_count; j++) {
+            long long current_number = equation->numbers[j];
             if (permutation[j-1] == '+')
-                result += equation->numbers[j];
+                result += current_number;
+            else if (permutation[j-1] == '*')
+                result *= current_number;
             else
-                result *= equation->numbers[j];
+                result = concatenate(result, current_number);
         }
 
         if (result == equation->result)
@@ -61,7 +70,7 @@ long long get_possible_permutations_sum(Equation **equations, uint num_equations
 
 char **get_permutations_for_equation(Equation *equation, size_t *count) {
     uint n = equation->numbers_count - 1;
-    uint num_permutations = 1 << n;
+    uint num_permutations = pow(3, n);
     char **permutations = (char **)malloc(num_permutations * sizeof(char *));
     if (!permutations) 
         return NULL;
@@ -83,4 +92,9 @@ void equations_free(Equation **equations, size_t num_equations) {
         }
     }
     free(equations);
+}
+static long long concatenate(long long a, long long b) {
+    long long b_digits = (b == 0) ? 1 : (long long)log10(b) + 1;
+
+    return a * (long long)pow(10, b_digits) + b;
 }

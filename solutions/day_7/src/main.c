@@ -73,9 +73,9 @@ int main() {
     if (!equations)
         return EXIT_FAILURE;
 
-    long long part_1 = get_possible_permutations_sum(equations, num_equations);
+    long long part_2 = get_possible_permutations_sum(equations, num_equations);
 
-    printf("Part 1: %lld\n", part_1);
+    printf("Part 2: %lld\n", part_2);
 
     equations_free(equations, NUM_EQUATIONS);
 }
