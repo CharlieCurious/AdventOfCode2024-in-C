@@ -6,7 +6,7 @@
 
 #define NUM_EQUATIONS 850 
 
-Equation **read_from_file(char *file_name) {
+Equation **read_from_file(char *file_name, size_t *total_equations) {
     FILE *file = fopen(file_name, "r");
     if (!file) {
         perror("Failed to open file.");
@@ -24,19 +24,19 @@ Equation **read_from_file(char *file_name) {
         
         char *token, *tokenptr;
         token = strtok_r(buffer, ":", &tokenptr);
-        int result = atoi(token);
+        long long result = strtoll(token, NULL, 10);
 
-        int *numbers = (int *)malloc(sizeof(int));
+        long long *numbers = (long long *)malloc(sizeof(long long));
         uint count = 0;
         token = strtok_r(tokenptr, " ", &tokenptr);
         while (token) {
-            int *tmp_numbers = numbers = realloc(numbers, (count + 1) * sizeof(int));
+            long long *tmp_numbers = numbers = realloc(numbers, (count + 1) * sizeof(long long));
             if (!tmp_numbers) {
                 free(numbers);
                 goto free_equations;
             }
 
-            numbers[count++] = atoi(token);
+            numbers[count++] = strtoll(token, NULL, 10);
             token = strtok_r(NULL, " ", &tokenptr);
         }
 
@@ -50,6 +50,8 @@ Equation **read_from_file(char *file_name) {
 
         equations[line_index++] = equation;
     }
+    printf("Read %zu lines\n", line_index + 1);
+    *total_equations = line_index;
 
     fclose(file);
     return equations;
@@ -66,9 +68,14 @@ close_file:
 }
 
 int main() {
-    Equation **equations = read_from_file("input_files/day_7.txt");
+    size_t num_equations;
+    Equation **equations = read_from_file("input_files/day_7.txt", &num_equations);
     if (!equations)
         return EXIT_FAILURE;
+
+    long long part_1 = get_possible_permutations_sum(equations, num_equations);
+
+    printf("Part 1: %lld\n", part_1);
 
     equations_free(equations, NUM_EQUATIONS);
 }

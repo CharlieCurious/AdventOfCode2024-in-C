@@ -1,4 +1,5 @@
 #include <permutations.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -25,9 +26,9 @@ void permutations_generate(
 }
 
 bool has_possible_equation(Equation *equation, char **permutations, size_t permutations_num) {
-    int result;
+    long long result;
     for (size_t i = 0; i < permutations_num; i++) {
-        char *permutation = permutations[0];
+        char *permutation = permutations[i];
         result = equation->numbers[0];
 
         for (size_t j = 1; j < equation->numbers_count; j++) {
@@ -42,6 +43,35 @@ bool has_possible_equation(Equation *equation, char **permutations, size_t permu
     }
 
     return false;
+}
+
+long long get_possible_permutations_sum(Equation **equations, uint num_equations) {
+    long long sum = 0;
+    for (size_t i = 0; i < num_equations; i++) {
+        Equation *equation = equations[i];
+        size_t num_permutations;
+        char **permutations = get_permutations_for_equation(equation, &num_permutations);
+        if (has_possible_equation(equation, permutations, num_permutations)) {
+            sum += equation->result;
+        }
+    }
+
+    return sum;
+}
+
+char **get_permutations_for_equation(Equation *equation, size_t *count) {
+    uint n = equation->numbers_count - 1;
+    uint num_permutations = 1 << n;
+    char **permutations = (char **)malloc(num_permutations * sizeof(char *));
+    if (!permutations) 
+        return NULL;
+
+    char operands_buffer[num_permutations];
+    *count = 0;
+
+    permutations_generate(permutations, count, operands_buffer, n, 0);
+
+    return permutations;
 }
 
 void equations_free(Equation **equations, size_t num_equations) {
