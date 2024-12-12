@@ -26,7 +26,7 @@ void should_calculate_permutations() {
 
 void should_return_true_if_equation_possible() {
     char *permutation[1] = { "*++" };
-    long numbers[4] = { 2, 2, 3, 7 };
+    long long numbers[4] = { 2, 2, 3, 7 };
     Equation equation;
     equation.numbers = numbers;
     equation.result = 14;
@@ -39,7 +39,7 @@ void should_return_true_if_equation_possible() {
 
 void should_return_false_if_equation_not_possible() {
     char *permutation[1] = { "*++" };
-    long numbers[4] = { 2, 2, 3, 7 };
+    long long numbers[4] = { 2, 2, 3, 7 };
     Equation equation;
     equation.numbers = numbers;
     equation.result = 15;
@@ -51,7 +51,7 @@ void should_return_false_if_equation_not_possible() {
 }
 
 void should_generate_permutations_for_equation() {
-    long numbers[3] = { 1, 2, 3 };
+    long long numbers[3] = { 1, 2, 3 };
     Equation equation;
     equation.numbers = numbers;
     equation.numbers_count = 3;
