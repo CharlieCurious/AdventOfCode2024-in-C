@@ -28,13 +28,18 @@ return_null:
 bool dictionary_insert(AnthenasDictionary *dict, char key, Location location) {
     if (!dict)
         return false;
+    size_t index = hash(key, dict->capacity);
 
-    KeyValue *kv = dict->kvp[hash(key, dict->capacity)];
+    KeyValue *kv = dict->kvp[index];
     while (kv) {
         if (kv->key == key) {
-            kv->value = location;
+            Location *locations = kv->value->locations;
+            locations[kv->value->size++] = location;
+            return true;
         }
+        kv = kv->next;
     }
+    return false;
 }
 
 void dictionary_free(AnthenasDictionary *dict) {
