@@ -4,6 +4,8 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+#define INITIAL_MAX_LOCATIONS_PER_SYMBOL 10
+
 typedef struct Location {
     uint8_t x;
     uint8_t y;
@@ -17,6 +19,7 @@ typedef struct AnthenaTuple {
 typedef struct LocationList {
     Location *locations;
     size_t size;
+    size_t capacity;
 } LocationList;
 
 typedef struct KeyValue {
@@ -30,6 +33,8 @@ typedef struct AnthenasDictionary {
     size_t capacity;
 } AnthenasDictionary;
 
-AnthenasDictionary *dictionary_create(uint16_t capacity);
-bool dictionary_insert(AnthenasDictionary *dict, char symbol, Location location);
+AnthenasDictionary *dictionary_create(size_t capacity);
+LocationList *dictionary_get(AnthenasDictionary *dict, char key);
+bool dictionary_insert(AnthenasDictionary *dict, char key, Location location);
 void dictionary_free(AnthenasDictionary *dict);
+bool location_equal(Location this, Location that);
