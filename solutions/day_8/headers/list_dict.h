@@ -11,11 +11,6 @@ typedef struct Location {
     uint8_t y;
 } Location;
 
-typedef struct AnthenaTuple {
-    Location a;
-    Location b;
-} AnthenaTuple;
-
 typedef struct LocationList {
     Location *locations;
     size_t size;
