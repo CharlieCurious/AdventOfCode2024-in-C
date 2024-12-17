@@ -7,9 +7,10 @@ typedef struct AnthenaTuple {
     Location b;
 } AnthenaTuple;
 
+typedef struct AntinodeTuple {
+    Location a;
+    Location b;
+} AntinodeTuple;
+
 AnthenaTuple *get_anthena_tuples(LocationList *location_list, uint *out_num_tuples);
-
-void add_anthena_tuple_antinodes(AnthenaTuple tuple);
-
-
-
+AntinodeTuple get_antinodes(AnthenaTuple anthenas);

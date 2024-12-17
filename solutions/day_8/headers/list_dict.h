@@ -8,8 +8,8 @@
 #define INITIAL_MAX_ANTINODE_LOCATIONS 1000
 
 typedef struct Location {
-    uint8_t x;
-    uint8_t y;
+    int x;
+    int y;
 } Location;
 
 typedef struct LocationList {
@@ -29,13 +29,8 @@ typedef struct AnthenasDictionary {
     size_t capacity;
 } AnthenasDictionary;
 
-typedef struct Antinode {
-    Location a;
-    Location b;
-} Antinode;
-
 typedef struct AntinodeBucket {
-    Antinode value;
+    Location value;
     struct AntinodeBucket *next;
 } AntinodeBucket;
 
@@ -52,5 +47,6 @@ void dictionary_free(AnthenasDictionary *dict);
 bool location_equal(Location this, Location that);
 
 AntinodeSet *antinode_set_create(size_t capacity);
-bool antinode_set_insert(AntinodeSet *set, Antinode antinode);
+bool antinode_set_insert(AntinodeSet *set, Location antinode);
 void antinode_set_free(AntinodeSet *set);
+size_t antinode_hash(Location antinode);

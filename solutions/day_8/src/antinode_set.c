@@ -1,22 +1,28 @@
 #include <list_dict.h>
 #include <stdlib.h>
 
-static size_t hash(Antinode antinode, size_t capacity) {
-    return ((antinode.a.x + antinode.b.x + antinode.a.y + antinode.b.y) * 31) % capacity;
-}
-
-static bool equal(Antinode this, Antinode that) {
-    return this.a.x == that.a.x && this.a.y == that.a.y &&
-        this.b.x == that.b.x && this.b.y == that.b.y;
-}
-
 static bool resize(AntinodeSet *set) {
-    size_t new_capacity = set->capacity * 2;
-    AntinodeSet *new_set = realloc(set, new_capacity);
-    if (!new_set)
+    size_t new_capacity = set->capacity == 0 ? 1 : set->capacity * 2;
+    AntinodeBucket **new_nodes = (AntinodeBucket **)calloc(new_capacity, sizeof(AntinodeBucket *));
+    if (!new_nodes)
         return false;
-    set = new_set;
+
+    for (size_t i = 0; i < set->capacity; i++) {
+        AntinodeBucket *current = set->nodes[i];
+        while (current) {
+            AntinodeBucket *next = current->next;
+            size_t new_index = antinode_hash(current->value) % new_capacity;
+            current->next = new_nodes[new_index];
+            new_nodes[new_index] = current;
+
+            current = next;
+        }
+    }
+
+    free(set->nodes);
+    set->nodes = new_nodes;
     set->capacity = new_capacity;
+
     return true;
 }
 
@@ -38,18 +44,18 @@ AntinodeSet *antinode_set_create(size_t capacity) {
     return set;
 }
 
-bool antinode_set_insert(AntinodeSet *set, Antinode antinode) {
+bool antinode_set_insert(AntinodeSet *set, Location antinode) {
     if (set->size == set->capacity) {
         bool resize_result = resize(set);
         if (!resize_result)
             return false;
     }
 
-    size_t index = hash(antinode, set->capacity);
+    size_t index = antinode_hash(antinode) % set->capacity;
 
     AntinodeBucket *current = set->nodes[index];
     while(current) {
-        if (equal(antinode, current->value))
+        if (location_equal(antinode, current->value))
             return false;
         current = current->next;
     }
@@ -65,6 +71,7 @@ bool antinode_set_insert(AntinodeSet *set, Antinode antinode) {
 
     return true;
 }
+
 void antinode_set_free(AntinodeSet *set) {
     if (!set)
         return;
@@ -80,4 +87,8 @@ void antinode_set_free(AntinodeSet *set) {
 
     free(set->nodes);
     free(set);
+}
+
+size_t antinode_hash(Location antinode) { 
+    return (antinode.x + antinode.y) * 31; 
 }
