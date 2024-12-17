@@ -38,8 +38,11 @@ void should_get_anthena_tuples() {
     tuple_2.a = b;
     tuple_2.b = c;
 
-    AnthenaTuple *result = get_anthena_tuples(&list);
+    uint num_tuples;
 
+    AnthenaTuple *result = get_anthena_tuples(&list, &num_tuples);
+
+    TEST_ASSERT_EQUAL_size_t_MESSAGE(3, num_tuples, "Test correct number of tuples");
     TEST_ASSERT_TRUE_MESSAGE(tuples_equal(result[0], tuple_0), "Test 1st tuple currect");
     TEST_ASSERT_TRUE_MESSAGE(tuples_equal(result[1], tuple_1), "Test 2nd tuple currect");
     TEST_ASSERT_TRUE_MESSAGE(tuples_equal(result[2], tuple_2), "Test 3rd tuple currect");
@@ -54,5 +57,6 @@ void tearDown() {
 
 int main() {
     UNITY_BEGIN();
+    RUN_TEST(should_get_anthena_tuples);
     return UNITY_END();
 }
