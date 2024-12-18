@@ -1,6 +1,7 @@
 #include <list_dict.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 static void free_key_value(KeyValue *kv);
 static void free_locations_list(LocationList *list);
@@ -42,6 +43,18 @@ LocationList *dictionary_get(AnthenasDictionary *dict, char key) {
     }
 
     return NULL;
+}
+
+void dictionary_get_all_kvp(AnthenasDictionary *dict, KeyValue *out_kvp, size_t *out_count) {
+    *out_count = 0;
+    for (size_t i = 0; i < dict->capacity; i++) {
+        KeyValue *current = dict->kvp[i];
+        while (current) {
+            out_kvp[*out_count] = *current;
+            (*out_count)++;
+            current = current->next;
+        }
+    }
 }
 
 bool dictionary_insert(AnthenasDictionary *dict, char key, Location location) {

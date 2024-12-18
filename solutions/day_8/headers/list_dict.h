@@ -42,6 +42,7 @@ typedef struct AntinodeSet {
 
 AnthenasDictionary *dictionary_create(size_t capacity);
 LocationList *dictionary_get(AnthenasDictionary *dict, char key);
+void dictionary_get_all_kvp(AnthenasDictionary *dict, KeyValue *out_kvp, size_t *out_count);
 bool dictionary_insert(AnthenasDictionary *dict, char key, Location location);
 void dictionary_free(AnthenasDictionary *dict);
 bool location_equal(Location this, Location that);

@@ -49,6 +49,25 @@ void should_get_value_in_dict() {
     TEST_ASSERT_TRUE_MESSAGE(location_equal(result->locations[0], location), "Test got location is right");
 }
 
+void should_get_all_kvp() {
+    Location a, b;
+    a.x = 1;
+    a.y = 1;
+    b.x = 2;
+    b.y = 2;
+
+    dictionary_insert(dict, 'a', a);
+    dictionary_insert(dict, 'b', b);
+    
+    KeyValue out_result[dict->capacity];
+    size_t out_count;
+    dictionary_get_all_kvp(dict, out_result, &out_count);
+
+    TEST_ASSERT_EQUAL_size_t_MESSAGE(2, out_count, "Test out_count set correctly");
+    TEST_ASSERT_TRUE_MESSAGE(location_equal(out_result[0].value->locations[0], a), "Test 'a' location correct");
+    TEST_ASSERT_TRUE_MESSAGE(location_equal(out_result[1].value->locations[0], b), "Test 'b' location correct");
+}
+
 void tearDown() {
     if (!dict)
         return;
@@ -61,5 +80,6 @@ int main() {
     RUN_TEST(should_create_dict_correctly);
     RUN_TEST(should_insert_value_in_dict);
     RUN_TEST(should_get_value_in_dict);
+    RUN_TEST(should_get_all_kvp);
     return UNITY_END();
 }
